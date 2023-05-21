@@ -1,0 +1,22 @@
+{
+    "project_name":       "bootloader",
+    "project_path":       "/Users/maejimafumika/esp/esp-idf/components/bootloader/subproject",
+    "build_dir":          "/Users/maejimafumika/Desktop/Lab/research/playroom2023/c_bob/build/bootloader",
+    "config_file":        "/Users/maejimafumika/Desktop/Lab/research/playroom2023/c_bob/sdkconfig",
+    "config_defaults":    "",
+    "app_elf":            "bootloader.elf",
+    "app_bin":            "bootloader.bin",
+    "git_revision":       "v5.0-dev-2586-ga82e6e63d9-dirty",
+    "target":             "esp32",
+    "rev":                "0",
+    "phy_data_partition": "",
+    "monitor_baud" :      "115200",
+    "monitor_toolprefix": "xtensa-esp32-elf-",
+    "config_environment" : {
+        "COMPONENT_KCONFIGS" : "/Users/maejimafumika/esp/esp-idf/components/efuse/Kconfig;/Users/maejimafumika/esp/esp-idf/components/esp32/Kconfig;/Users/maejimafumika/esp/esp-idf/components/esp_common/Kconfig;/Users/maejimafumika/esp/esp-idf/components/esp_hw_support/Kconfig;/Users/maejimafumika/esp/esp-idf/components/esp_system/Kconfig;/Users/maejimafumika/esp/esp-idf/components/freertos/Kconfig;/Users/maejimafumika/esp/esp-idf/components/hal/Kconfig;/Users/maejimafumika/esp/esp-idf/components/log/Kconfig;/Users/maejimafumika/esp/esp-idf/components/newlib/Kconfig;/Users/maejimafumika/esp/esp-idf/components/spi_flash/Kconfig",
+        "COMPONENT_KCONFIGS_PROJBUILD" : "/Users/maejimafumika/esp/esp-idf/components/bootloader/Kconfig.projbuild;/Users/maejimafumika/esp/esp-idf/components/esp_rom/Kconfig.projbuild;/Users/maejimafumika/esp/esp-idf/components/esptool_py/Kconfig.projbuild;/Users/maejimafumika/esp/esp-idf/components/partition_table/Kconfig.projbuild"
+    },
+    "build_components" : [ "bootloader", "bootloader_support", "efuse", "esp32", "esp_common", "esp_hw_support", "esp_rom", "esp_system", "esptool_py", "freertos", "hal", "log", "main", "micro-ecc", "newlib", "partition_table", "soc", "spi_flash", "xtensa", "" ],
+    "build_component_paths" : [ "/Users/maejimafumika/esp/esp-idf/components/bootloader", "/Users/maejimafumika/esp/esp-idf/components/bootloader_support", "/Users/maejimafumika/esp/esp-idf/components/efuse", "/Users/maejimafumika/esp/esp-idf/components/esp32", "/Users/maejimafumika/esp/esp-idf/components/esp_common", "/Users/maejimafumika/esp/esp-idf/components/esp_hw_support", "/Users/maejimafumika/esp/esp-idf/components/esp_rom", "/Users/maejimafumika/esp/esp-idf/components/esp_system", "/Users/maejimafumika/esp/esp-idf/components/esptool_py", "/Users/maejimafumika/esp/esp-idf/components/freertos", "/Users/maejimafumika/esp/esp-idf/components/hal", "/Users/maejimafumika/esp/esp-idf/components/log", "/Users/maejimafumika/esp/esp-idf/components/bootloader/subproject/main", "/Users/maejimafumika/esp/esp-idf/components/bootloader/subproject/components/micro-ecc", "/Users/maejimafumika/esp/esp-idf/components/newlib", "/Users/maejimafumika/esp/esp-idf/components/partition_table", "/Users/maejimafumika/esp/esp-idf/components/soc", "/Users/maejimafumika/esp/esp-idf/components/spi_flash", "/Users/maejimafumika/esp/esp-idf/components/xtensa", "" ],
+    "debug_prefix_map_gdbinit": ""
+}
