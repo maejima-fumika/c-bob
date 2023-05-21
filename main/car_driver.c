@@ -7,6 +7,8 @@
 #include "esp_timer.h"
 #include "distance_sensor.h"
 #include "motor_driver.h"
+#include <sys/time.h>
+#include "experiment.h"
 
 running_state_t car_running_state = CAR_STOPED;
 esp_timer_handle_t going_back_timer_handler;
@@ -36,7 +38,6 @@ static void turning_left_timer_callback(void *arg)
 
 void drive_car_task(void *arg)
 {
-    int64_t time_diff;
     init_motors();
 
     // init timers
@@ -55,7 +56,9 @@ void drive_car_task(void *arg)
     {
         if (xSemaphoreTake(ds_semphr, portMAX_DELAY))
         {
-            // float distance = (float)time_diff * 340 * 100 / 1000000 / 2; // time_diff * 音速 * m->cm / μs->s / 往復
+            struct timeval ex_start;
+            gettimeofday(&ex_start, NULL);
+
             if (distance < 10) {
                 switch (car_running_state)
                 {
@@ -81,7 +84,12 @@ void drive_car_task(void *arg)
                     car_running_state = CAR_GOING_STRAIGHT;
                 }
             }
-            
+
+            struct timeval ex_end;
+            gettimeofday(&ex_end, NULL);
+            int64_t time_diff = (int64_t)ex_end.tv_sec * 1000000L + (int64_t)ex_end.tv_usec - ((int64_t)ex_start.tv_sec * 1000000L + (int64_t)ex_start.tv_usec);
+            car_driver_time_avrg = car_driver_time_avrg * (float)car_driver_count / (float)(car_driver_count + 1) + (float)time_diff / (car_driver_count + 1);
+            car_driver_count += 1;
         }
     }
 }

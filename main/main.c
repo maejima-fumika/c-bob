@@ -11,6 +11,7 @@
 #include "distance_sensor.h"
 #include "motor_driver.h"
 #include "car_driver.h"
+#include "experiment.h"
 
 void app_main(void)
 {
@@ -30,6 +31,7 @@ void app_main(void)
     while (true)
     {
         vTaskDelay(1000 / portTICK_PERIOD_MS);
+        print_average_time();
     }
 }
 

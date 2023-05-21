@@ -4,6 +4,7 @@
 #include <sys/time.h>
 #include <unistd.h>
 #include "freertos/task.h"
+#include "experiment.h"
 
 // The target distance sensor is HC-SR04
 // This source code is based on the datasheet:
@@ -25,10 +26,13 @@ SemaphoreHandle_t time_isr_semphr;
 static bool has_raised = false;
 static struct timeval echo_rasing_edge_time;
 static int64_t time_diff;
-// QueueHandle_t distance_sensor_tdiff_queue = NULL;
+
+static int64_t ex_time_diff;
 
 static void echo_edge_handler(void *arg)
 {
+    struct timeval ex_start;
+    gettimeofday(&ex_start, NULL);
     if (!has_raised) {
         gettimeofday(&echo_rasing_edge_time, NULL);
         has_raised = true;
@@ -40,6 +44,9 @@ static void echo_edge_handler(void *arg)
         has_raised = false;
         xSemaphoreGiveFromISR(time_isr_semphr, NULL);
     }
+    struct timeval ex_end;
+    gettimeofday(&ex_end, NULL);
+    ex_time_diff = (int64_t)ex_end.tv_sec * 1000000L + (int64_t)ex_end.tv_usec - ((int64_t)ex_start.tv_sec * 1000000L + (int64_t)ex_start.tv_usec);
 }
 
 void read_sensor_task(void *arg)
@@ -73,6 +80,9 @@ void read_sensor_task(void *arg)
 
     while (true)
     {
+        struct timeval ex_start;
+        gettimeofday(&ex_start, NULL);
+
         // 初期化
         has_raised = false;
         gpio_set_level(TRIG_GPIO_NUM, GPIO_LOW);
@@ -85,12 +95,24 @@ void read_sensor_task(void *arg)
 
         // 割り込み処理が全部終わるまで待つ。
         xSemaphoreTake(time_isr_semphr, portMAX_DELAY);
+
+
+        isr_time_avrg = isr_time_avrg * (float)isr_count / (float)(isr_count + 1) + (float)ex_time_diff / (isr_count + 1);
+        isr_count += 1;
+
         distance = (float)time_diff * 340 * 100 / 1000000 / 2;
         // printf("distance: %f \n", distance);
         // vTaskDelay(1000 / portTICK_PERIOD_MS);
 
         // 距離の測定が終わったことを通知
         xSemaphoreGive(ds_semphr);
-        vTaskDelay(1 / portTICK_PERIOD_MS);
+
+        struct timeval ex_end;
+        gettimeofday(&ex_end, NULL);
+        int64_t ex_ds_time_diff = (int64_t)ex_end.tv_sec * 1000000L + (int64_t)ex_end.tv_usec - ((int64_t)ex_start.tv_sec * 1000000L + (int64_t)ex_start.tv_usec);
+        ds_measuring_time_avrg = ds_measuring_time_avrg * (float)ds_measuring_count / (float)(ds_measuring_count + 1) + (float)ex_ds_time_diff / (ds_measuring_count + 1);
+        ds_measuring_count += 1;
+
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
 }
