@@ -103,16 +103,17 @@ void read_sensor_task(void *arg)
         distance = (float)time_diff * 340 * 100 / 1000000 / 2;
         // printf("distance: %f \n", distance);
         // vTaskDelay(1000 / portTICK_PERIOD_MS);
-
-        // 距離の測定が終わったことを通知
-        xSemaphoreGive(ds_semphr);
-
+        
         struct timeval ex_end;
         gettimeofday(&ex_end, NULL);
         int64_t ex_ds_time_diff = (int64_t)ex_end.tv_sec * 1000000L + (int64_t)ex_end.tv_usec - ((int64_t)ex_start.tv_sec * 1000000L + (int64_t)ex_start.tv_usec);
         ds_measuring_time_avrg = ds_measuring_time_avrg * (float)ds_measuring_count / (float)(ds_measuring_count + 1) + (float)ex_ds_time_diff / (ds_measuring_count + 1);
         ds_measuring_count += 1;
 
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
+
+        // 距離の測定が終わったことを通知
+        xSemaphoreGive(ds_semphr);
+
+        vTaskDelay(1 / portTICK_PERIOD_MS);
     }
 }

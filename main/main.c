@@ -21,8 +21,8 @@ void app_main(void)
     // xTaskCreate(read_sensor_task, "read_sensor_task_0", 1024 * 2, NULL, 0, NULL);
     // xTaskCreate(drive_car_task, "read_distance_task", 2048, NULL, 10, NULL);
     ds_semphr = xSemaphoreCreateBinary();
-    xTaskCreate(read_sensor_task, "read_sensor_task_0", 1024 * 2, NULL, 0, NULL);
-    xTaskCreate(drive_car_task, "drive_car_task", 2048, NULL, 10, NULL);
+    xTaskCreate(read_sensor_task, "read_sensor_task_0", 1024 * 2, NULL, 3, NULL);
+    xTaskCreate(drive_car_task, "drive_car_task", 2048, NULL, 3, NULL);
 
     // init_motors();
     // set_duty(MOTOR_LEFT, 0.0);
